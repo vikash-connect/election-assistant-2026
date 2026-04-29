@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-eci-blue: #1E3A8A; /* Deeper tailwind blue-900 like */
+  --color-eci-saffron: #F97316; /* Tailwind orange-500 */
+  --color-eci-green: #15803D; /* Tailwind green-700 */
+  --color-eci-saffron-light: #FFEDD5;
+  --color-eci-green-light: #DCFCE7;
+  --color-eci-blue-light: #DBEAFE;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased font-sans;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-eci-saffron via-eci-blue to-eci-green;
+  }
+}
