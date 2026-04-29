@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Info, X, Copy, Check, Terminal, Sparkles } from 'lucide-react';
+import { Info, X, Copy, Check, Terminal, Sparkles, ExternalLink } from 'lucide-react';
 
 export default function PromptModalFAB() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,9 +15,16 @@ export default function PromptModalFAB() {
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const repoUrl = "https://github.com/vikash-connect/election-assistant-2026";
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(repoUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
   };
 
   const prompts = [
@@ -93,7 +100,16 @@ export default function PromptModalFAB() {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-slate-200/50 bg-slate-50/50 flex justify-end">
+            <div className="p-6 border-t border-slate-200/50 bg-slate-50/50 flex items-center justify-end space-x-4">
+              <a
+                href={repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-eci-blue transition-colors"
+              >
+                View on GitHub
+                <ExternalLink className="w-4 h-4 ml-1" />
+              </a>
               <button 
                 onClick={handleCopy}
                 className="inline-flex items-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold transition-all shadow-md hover:shadow-lg"
