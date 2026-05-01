@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, UserPlus, Edit3, Link as LinkIcon, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const forms = [
   {
@@ -43,22 +44,32 @@ export default function FormGuide() {
   return (
     <section id="forms" className="py-24 bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Know Your Form</h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Select the right form for your needs. Quick, simple, and digital.
           </p>
-        </div>
+        </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Form Selector */}
-          <div className="w-full lg:w-1/3 space-y-4">
+          <div className="w-full lg:w-1/3 space-y-4" role="tablist" aria-orientation="vertical">
             {forms.map((form) => {
               const isActive = activeForm.id === form.id;
               const Icon = form.icon;
               return (
                 <button
                   key={form.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${form.id}`}
+                  id={`tab-${form.id}`}
                   onClick={() => setActiveForm(form)}
                   className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between ${
                     isActive 
@@ -66,16 +77,16 @@ export default function FormGuide() {
                       : 'border-transparent bg-white shadow-sm hover:bg-slate-100 hover:scale-102'
                   }`}
                 >
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 pointer-events-none">
                     <div className={`p-3 rounded-xl ${form.bg} ${form.text}`}>
-                      <Icon className="w-6 h-6" />
+                      <Icon className="w-6 h-6" aria-hidden="true" />
                     </div>
                     <div>
                       <h3 className="font-bold text-slate-900">{form.name}</h3>
                       <p className="text-sm text-slate-500 font-medium">{form.title}</p>
                     </div>
                   </div>
-                  {isActive && <ChevronRight className={`w-5 h-5 ${form.text}`} />}
+                  {isActive && <ChevronRight className={`w-5 h-5 ${form.text}`} aria-hidden="true" />}
                 </button>
               );
             })}
@@ -83,40 +94,55 @@ export default function FormGuide() {
 
           {/* Form Details */}
           <div className="w-full lg:w-2/3">
-            <div className={`glass-card h-full p-8 md:p-12 border-t-4 ${activeForm.color}`}>
-              <div className="flex items-start justify-between mb-8">
-                <div>
-                  <h3 className="text-3xl font-bold text-slate-900 mb-2">{activeForm.name}</h3>
-                  <h4 className={`text-xl font-semibold ${activeForm.text}`}>{activeForm.title}</h4>
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={activeForm.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className={`glass-card transform-gpu bg-white/70 backdrop-blur-md h-full p-8 md:p-12 border-t-4 ${activeForm.color} rounded-3xl shadow-lg`}
+                role="tabpanel"
+                id={`panel-${activeForm.id}`}
+                aria-labelledby={`tab-${activeForm.id}`}
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <h3 className="text-3xl font-bold text-slate-900 mb-2">{activeForm.name}</h3>
+                    <h4 className={`text-xl font-semibold ${activeForm.text}`}>{activeForm.title}</h4>
+                  </div>
+                  <div className={`p-4 rounded-2xl ${activeForm.bg} ${activeForm.text}`} aria-hidden="true">
+                    <FileText className="w-10 h-10" />
+                  </div>
                 </div>
-                <div className={`p-4 rounded-2xl ${activeForm.bg} ${activeForm.text}`}>
-                  <FileText className="w-10 h-10" />
+                
+                <p className="text-lg text-slate-700 mb-8 leading-relaxed">
+                  {activeForm.description}
+                </p>
+
+                <div className="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-100">
+                  <h5 className="font-bold text-slate-900 mb-4 flex items-center">
+                    <span className="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded mr-3">REQUIRED</span>
+                    Key Documents Needed
+                  </h5>
+                  <ul className="space-y-3">
+                    {activeForm.requirements.map((req, i) => (
+                      <li key={i} className="flex items-center text-slate-700">
+                        <div className={`w-2 h-2 rounded-full mr-3 ${activeForm.bg.replace('-light', '')}`} aria-hidden="true"></div>
+                        {req}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-              
-              <p className="text-lg text-slate-700 mb-8 leading-relaxed">
-                {activeForm.description}
-              </p>
 
-              <div className="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-100">
-                <h5 className="font-bold text-slate-900 mb-4 flex items-center">
-                  <span className="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded mr-3">REQUIRED</span>
-                  Key Documents Needed
-                </h5>
-                <ul className="space-y-3">
-                  {activeForm.requirements.map((req, i) => (
-                    <li key={i} className="flex items-center text-slate-700">
-                      <div className={`w-2 h-2 rounded-full mr-3 ${activeForm.bg.replace('-light', '')}`}></div>
-                      {req}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <button className={`w-full md:w-auto px-8 py-3 rounded-full text-white font-bold transition-all shadow-md hover:shadow-lg ${activeForm.id === 'form6' ? 'bg-eci-blue hover:bg-blue-800' : activeForm.id === 'form8' ? 'bg-eci-saffron hover:bg-orange-600' : 'bg-eci-green hover:bg-green-700'}`}>
-                Apply Online Now
-              </button>
-            </div>
+                <button 
+                  aria-label={`Apply Online Now for ${activeForm.name}`}
+                  className={`w-full md:w-auto px-8 py-3 rounded-full text-white font-bold transition-all shadow-md hover:shadow-lg ${activeForm.id === 'form6' ? 'bg-eci-blue hover:bg-blue-800' : activeForm.id === 'form8' ? 'bg-eci-saffron hover:bg-orange-600' : 'bg-eci-green hover:bg-green-700'}`}
+                >
+                  Apply Online Now
+                </button>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

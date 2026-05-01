@@ -7,20 +7,20 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center space-x-3">
-            <div className="bg-eci-blue p-2 rounded-lg">
+            <div className="bg-eci-blue p-2 rounded-lg" aria-hidden="true">
               <Vote className="h-8 w-8 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900 leading-tight">Election Commission<br/><span className="text-eci-saffron">of India</span></h1>
             </div>
           </div>
-          <nav className="hidden md:flex space-x-8">
-            <a href="#timeline" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Election Cycle</a>
-            <a href="#forms" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Know Your Form</a>
-            <a href="#checklist" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Voter Checklist</a>
+          <nav className="hidden md:flex space-x-8" aria-label="Main Navigation">
+            <a href="#roadmap" aria-label="Navigate to Election Cycle roadmap" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Election Cycle</a>
+            <a href="#forms" aria-label="Navigate to Know Your Form section" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Know Your Form</a>
+            <a href="#checklist" aria-label="Navigate to Voter Checklist section" className="text-slate-600 hover:text-eci-blue font-medium transition-colors">Voter Checklist</a>
           </nav>
           <div className="flex items-center">
-            <button className="bg-eci-saffron hover:bg-orange-600 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            <button aria-label="Open Voter Portal Login" className="bg-eci-saffron hover:bg-orange-600 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
               Voter Portal Login
             </button>
           </div>
