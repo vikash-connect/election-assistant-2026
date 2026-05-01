@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import VoterEligibility from './VoterEligibility';
-import BoothFinder from './BoothFinder';
 
 export default function VoterTools() {
   const [activeTab, setActiveTab] = useState('eligibility');
@@ -55,37 +54,13 @@ export default function VoterTools() {
                 Voter Eligibility Tool
               </span>
             </button>
-            <button 
-              role="tab"
-              aria-selected={activeTab === 'booth'}
-              id="tab-booth"
-              aria-controls="panel-booth"
-              className={`flex-1 py-5 text-center font-bold text-lg transition-all ${
-                activeTab === 'booth' 
-                  ? 'bg-gradient-to-r from-green-50 to-green-100/50 text-eci-green border-b-2 border-eci-green' 
-                  : 'text-slate-500 hover:bg-slate-50/50 hover:text-slate-700'
-              }`}
-              onClick={() => setActiveTab('booth')}
-            >
-              <span className="flex items-center justify-center">
-                <MapPin className="w-5 h-5 mr-2" aria-hidden="true" />
-                Booth Finder Simulation
-              </span>
-            </button>
           </div>
 
           {/* Tab Content */}
           <div className="p-8 md:p-12">
-            {activeTab === 'eligibility' && (
-              <div role="tabpanel" id="panel-eligibility" aria-labelledby="tab-eligibility">
-                <VoterEligibility />
-              </div>
-            )}
-            {activeTab === 'booth' && (
-              <div role="tabpanel" id="panel-booth" aria-labelledby="tab-booth">
-                <BoothFinder />
-              </div>
-            )}
+            <div role="tabpanel" id="panel-eligibility" aria-labelledby="tab-eligibility">
+              <VoterEligibility />
+            </div>
           </div>
         </motion.div>
       </div>
